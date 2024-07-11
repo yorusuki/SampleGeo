@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buttonGroup {
+            display: flex;
+            gap: 50px;
+        }
+    </style>
+</head>
+<body>
+<!--測試API https://developer.mozilla.org/zh-TW/docs/Web/API/Geolocation_API-->
+<div id="statusText" style="font-size: 45px">狀態：</div>
+<div id="status" style="font-size: 45px"></div>
+<div id="locationText" style="font-size: 45px">經緯度：</div>
+<div id="location" style="font-size: 45px"></div>
+
+<div class="buttonGroup">
+    <input id="show" type="button" value="show" style="font-size: 50px"/>
+    <input id="mobileShow" type="button" value="mShow" style="font-size: 50px"/>
+</div>
+<script>
+    let webCheck = false;
+    let androidCheck = false;
+    let iosCheck = false;
+    let stateText;
+    let locationText;
+    let showBtn;
+    let mobileShowBtn;
+
+    window.onload = function () {
+        stateText = document.getElementById('status');
+        locationText = document.getElementById('location');
+        showBtn = document.getElementById('show');
+        mobileShowBtn = document.getElementById('mobileShow');
+        checkEnv();
+        showBtn.addEventListener('click', (e) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    stateText = `${position.coords.latitude},${position.coords.longitude}`;
+                    getLocation(position.coords.latitude, position.coords.longitude)
+                }, (error) => {
+                    stateText = error.message;
+                    showStateMessage(error.message)
+                });
+        })
+        mobileShowBtn.addEventListener('click', (e) => {
+            if (androidCheck) {
+                window.jsHandlers.OpenAndroidLocation();
+            } else if (iosCheck) {
+                window.webkit.messageHandlers.OpenAndroidLocation.postMessage(null);
+            }
+        })
+    }
+
+    function showStateMessage(message) {
+        document.getElementById("location").textContent = message;
+    }
+
+    function checkEnv() {
+        // 先檢查環境 在判斷是否做什麼
+        if (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function") {
+            // android
+            // window.jsHandlers.OpenAndroidLocation();
+            androidCheck = true;
+        } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenAndroidLocation) {
+            // ios
+            // window.webkit.messageHandlers.OpenAndroidLocation.postMessage(null);
+            iosCheck = true;
+        }
+        if ("geolocation" in navigator) {
+            webCheck = true;
+        }
+        stateText.innerHTML = `web : ${webCheck.toString()}</br>android : ${androidCheck.toString()}</br>ios : ${iosCheck.toString()}`;
+    }
+    
+    function getLocation(lat, lng) {
+        showStateMessage(`${lat.toString()},${lng.toString()}`);
+    }
+</script>
+</body>
+</html>
+
