@@ -64,13 +64,14 @@
         window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
       }
     })
+    iShowBtn.addEventListener('click', (e)=>{
+      const s = window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
+      s.then((pos)=>{
+        console.log(pos)
+      })
+    })
   }
-  iShowBtn.addEventListener('click', (e)=>{
-       const s = window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
-       s.then((pos)=>{
-         console.log(pos)
-       })
-  })
+
 
   function showStateMessage(message) {
     document.getElementById("location").textContent = message;
