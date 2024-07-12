@@ -58,7 +58,7 @@
             if (androidCheck) {
                 window.jsHandlers.OpenAndroidLocation();
             } else if (iosCheck) {
-                window.webkit.messageHandlers.OpenAndroidLocation.postMessage(null);
+                window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
             }
         })
     }
@@ -73,7 +73,7 @@
             // android
             // window.jsHandlers.OpenAndroidLocation();
             androidCheck = true;
-        } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenAndroidLocation) {
+        } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation) {
             // ios
             // window.webkit.messageHandlers.OpenAndroidLocation.postMessage(null);
             iosCheck = true;
@@ -83,7 +83,7 @@
         }
         stateText.innerHTML = `web : ${webCheck.toString()}</br>android : ${androidCheck.toString()}</br>ios : ${iosCheck.toString()}`;
     }
-    
+
     function getLocation(lat, lng) {
         showStateMessage(`${lat.toString()},${lng.toString()}`);
     }
