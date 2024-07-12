@@ -38,14 +38,14 @@
   let locationText;
   let showBtn;
   let mobileShowBtn;
-  let iBtn;
+  let iShowBtn;
 
   window.onload = function () {
     stateText = document.getElementById('status');
     locationText = document.getElementById('location');
     showBtn = document.getElementById('show');
     mobileShowBtn = document.getElementById('mobileShow');
-    iBtn = document.getElementById('iShow');
+    iShowBtn = document.getElementById('iShow');
     checkEnv();
     showBtn.addEventListener('click', (e) => {
       navigator.geolocation.getCurrentPosition(
@@ -65,12 +65,11 @@
       }
     })
   }
-  iBtn.addEventListener('click', (e)=>{
-    (async()=>{
-      const s = await window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
-      console.log(s)
-      showStateMessage(s);
-    })()
+  iShowBtn.addEventListener('click', (e)=>{
+       const s = window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
+       s.then((pos)=>{
+         console.log(pos)
+       })
   })
 
   function showStateMessage(message) {
