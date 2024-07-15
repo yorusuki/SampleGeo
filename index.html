@@ -43,14 +43,6 @@
 
     const envKey = {"IOS": 0, "ANDROID": 1, "WEB": 2};
     function checkEnv() {
-        console.log('Checking environment...');
-        console.log('window.jsHandlers:', window.jsHandlers);
-        console.log('typeof window.jsHandlers.OpenAndroidLocation:', typeof window.jsHandlers?.OpenAndroidLocation);
-        console.log('window.webkit:', window.webkit);
-        console.log('window.webkit.messageHandlers:', window.webkit?.messageHandlers);
-        console.log('window.webkit.messageHandlers.OpenIOSLocation:', window.webkit?.messageHandlers?.OpenIOSLocation);
-        console.log('navigator.geolocation:', navigator.geolocation);
-
         switch (true) {
             case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
                 console.log('Android environment detected');
@@ -65,7 +57,8 @@
     }
 
     function runGeoApi() {
-        switch (checkEnv()) {
+        const envType = checkEnv();
+        switch (envType) {
             case envKey.ANDROID:
                 window.jsHandlers.OpenAndroidLocation();
                 break
@@ -84,17 +77,18 @@
     }
 ///////////////////////////////////////////////////////////////////
     function getStateKeys() {
+        const envType = checkEnv();
         const stateMsg = document.getElementById('stateMsg')
-        switch (checkEnv()) {
+        switch (envType) {
             case envKey.ANDROID:
                 stateMsg.textContent = envKey.ANDROID
-                return
+                break
             case envKey.IOS:
                 stateMsg.textContent = envKey.IOS
-                return;
+                break;
             case envKey.WEB:
                 // navigator.geolocation //如果需要執行才呼叫
-                return;
+                break;
         }
     }
 
