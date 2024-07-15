@@ -43,13 +43,16 @@
     const envKey = {"IOS": 0, "ANDROID": 1, "WEB": 2};
     function checkEnv() {
         let envIndex;
-        if (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function") {
-            envIndex = envKey.ANDROID
-        } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation) {
-            envIndex = envKey.IOS
-        }
-        if ("geolocation" in navigator) {
-            envIndex = envKey.WEB
+        switch (true){
+            case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
+                envIndex = envKey.ANDROID
+                break;
+            case (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation):
+                envIndex = envKey.IOS
+                break
+            case ("geolocation" in navigator):
+                envIndex = envKey.WEB
+                break;
         }
         return envIndex;
     }
@@ -67,7 +70,7 @@
                 break
         }
     }
-    
+
     function getLocation(lat, lng) {
         // do some thing..
         showStateMessage(`${lat},${lng}`)
