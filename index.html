@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        body{
+        body {
             display: flex;
             flex-direction: column;
             gap: 60px;
         }
-        .block{
+
+        .block {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 40px;
         }
-        div,input, #msg{
+
+        div, input, #msg {
             font-size: 40px;
         }
     </style>
@@ -34,26 +36,29 @@
 </div>
 
 <script>
-    window.onload = ()=> {
-        document.getElementById('start').addEventListener('click', ()=>{
+    window.onload = () => {
+        document.getElementById('start').addEventListener('click', () => {
             getStateKeys();
             runGeoApi();
         })
     }
 
-    const envKey = {"IOS": 0, "ANDROID": 1, "WEB": 2};
+    const envKey = {"NOPE": -1, "IOS": 0, "ANDROID": 1, "WEB": 2};
+
     function checkEnv() {
-        switch (true) {
-            case (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation):
-                console.log('iOS environment detected');
-                return envKey.IOS;
-            case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
-                console.log('Android environment detected');
-                return envKey.ANDROID;
-            case ("geolocation" in navigator):
-                console.log('Web environment detected');
-                return envKey.WEB;
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation) {
+            console.log('iOS environment detected');
+            return envKey.IOS;
         }
+        if (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function") {
+            console.log('Android environment detected');
+            return envKey.ANDROID;
+        }
+        if ("geolocation" in navigator) {
+            console.log('Web environment detected');
+            return envKey.WEB;
+        }
+        return envKey.NOPE;
     }
 
     function runGeoApi() {
@@ -68,6 +73,8 @@
             case envKey.WEB:
                 // navigator.geolocation //如果需要執行才呼叫
                 break
+            case envKey.NOPE:
+                break;
         }
     }
 
@@ -75,7 +82,8 @@
         // do some thing..
         showStateMessage(`${lat},${lng}`)
     }
-///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     function getStateKeys() {
         const envType = checkEnv();
         const stateMsg = document.getElementById('stateMsg')
