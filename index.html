@@ -36,6 +36,7 @@
 <script>
     window.onload = ()=> {
         document.getElementById('start').addEventListener('click', ()=>{
+            getStateKeys();
             runGeoApi();
         })
     }
@@ -62,7 +63,7 @@
                 window.jsHandlers.OpenAndroidLocation();
                 break
             case envKey.IOS:
-                window.webkit.messageHandlers.OpenIOSLocation(null);
+                window.webkit.messageHandlers.OpenIOSLocation.postMessage(null);
                 break
             case envKey.WEB:
                 // navigator.geolocation //如果需要執行才呼叫
@@ -80,13 +81,13 @@
         switch (checkEnv()) {
             case envKey.ANDROID:
                 stateMsg.textContent = envKey.ANDROID.name
-                break
+                return
             case envKey.IOS:
                 stateMsg.textContent = envKey.IOS.name
-                break
+                return;
             case envKey.WEB:
                 // navigator.geolocation //如果需要執行才呼叫
-                break
+                return;
         }
     }
 
