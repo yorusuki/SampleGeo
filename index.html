@@ -46,15 +46,14 @@
         switch (true){
             case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
                 envIndex = envKey.ANDROID
-                break;
+                return envIndex;
             case (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation):
                 envIndex = envKey.IOS
-                break
+                return envIndex;
             case ("geolocation" in navigator):
                 envIndex = envKey.WEB
-                break;
+                return envIndex;
         }
-        return envIndex;
     }
 
     function runGeoApi() {
