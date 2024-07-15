@@ -43,14 +43,24 @@
 
     const envKey = {"IOS": 0, "ANDROID": 1, "WEB": 2};
     function checkEnv() {
-        let envIndex;
-        switch (true){
+        console.log('Checking environment...');
+        console.log('window.jsHandlers:', window.jsHandlers);
+        console.log('typeof window.jsHandlers.OpenAndroidLocation:', typeof window.jsHandlers?.OpenAndroidLocation);
+        console.log('window.webkit:', window.webkit);
+        console.log('window.webkit.messageHandlers:', window.webkit?.messageHandlers);
+        console.log('window.webkit.messageHandlers.OpenIOSLocation:', window.webkit?.messageHandlers?.OpenIOSLocation);
+        console.log('navigator.geolocation:', navigator.geolocation);
+
+        switch (true) {
             case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
-                return envKey.ANDROID
+                console.log('Android environment detected');
+                return envKey.ANDROID;
             case (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation):
-                return envKey.IOS
+                console.log('iOS environment detected');
+                return envKey.IOS;
             case ("geolocation" in navigator):
-                return envKey.WEB
+                console.log('Web environment detected');
+                return envKey.WEB;
         }
     }
 
@@ -87,7 +97,7 @@
                 return;
         }
     }
-    
+
     function showStateMessage(message) {
         document.getElementById("msg").textContent = message;
     }
