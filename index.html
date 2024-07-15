@@ -46,14 +46,11 @@
         let envIndex;
         switch (true){
             case (window.jsHandlers && typeof window.jsHandlers.OpenAndroidLocation === "function"):
-                envIndex = envKey.ANDROID
-                return envIndex;
+                return envKey.ANDROID
             case (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.OpenIOSLocation):
-                envIndex = envKey.IOS
-                return envIndex;
+                return envKey.IOS
             case ("geolocation" in navigator):
-                envIndex = envKey.WEB
-                return envIndex;
+                return envKey.WEB
         }
     }
 
@@ -80,18 +77,17 @@
         const stateMsg = document.getElementById('stateMsg')
         switch (checkEnv()) {
             case envKey.ANDROID:
-                stateMsg.textContent = envKey.ANDROID.name
+                stateMsg.textContent = envKey.ANDROID
                 return
             case envKey.IOS:
-                stateMsg.textContent = envKey.IOS.name
+                stateMsg.textContent = envKey.IOS
                 return;
             case envKey.WEB:
                 // navigator.geolocation //如果需要執行才呼叫
                 return;
         }
     }
-
-
+    
     function showStateMessage(message) {
         document.getElementById("msg").textContent = message;
     }
